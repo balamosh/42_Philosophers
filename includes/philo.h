@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:21 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/13 22:10:59 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/14 00:12:20 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ typedef struct s_cfg
 
 void	ft_philo(int ac, char **av);
 void	*ft_routine(void *data);
-t_bool	ft_routine_dead(t_philo *philo, t_cfg *cfg);
+t_bool	ft_routine_sim(t_philo *philo, t_cfg *cfg);
+void	ft_routine_thinking(t_philo *philo, t_cfg *cfg);
+void	ft_routine_eating(t_philo *philo, t_cfg *cfg);
+void	ft_routine_sleeping(t_philo *philo, t_cfg *cfg);
 
 #endif
