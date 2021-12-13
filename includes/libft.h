@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 21:21:23 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/11 16:11:29 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/13 21:16:21 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ typedef enum s_bool
 }			t_bool;
 
 t_bool	ft_malloc(void **ptr, size_t n);
-int		ft_atoi(const char *str);
+long	ft_atol(const char *str);
 
 #endif

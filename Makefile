@@ -4,7 +4,13 @@ SRCS_DIR	= srcs/
 HEAD_DIR	= includes/
 BUILD_DIR	= build/
 
-SRCS_FILES	= main.c				
+SRCS_FILES	= main.c				\
+			  philo/philo.c			\
+			  philo/routine.c		\
+			  philo/routine_utils.c	\
+			  libft/atol.c			\
+			  libft/malloc.c		\
+			  libft/put_fd.c
 
 OBJS_FILES	= $(SRCS_FILES:.c=.o)
 
@@ -13,14 +19,14 @@ OBJS		= $(addprefix $(BUILD_DIR), $(OBJS_FILES))
 DEPS		= $(OBJS:.o=.d)
 
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra -MMD
+CFLAGS		= -Wall -Werror -Wextra -MMD -pthread
 
 all: $(NAME)
 
 bonus: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 $(BUILD_DIR)%.o: $(SRCS_DIR)%.c $(BUILD_DIR)%.d
 	@mkdir -p $(@D)
