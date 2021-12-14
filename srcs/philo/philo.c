@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:10 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/14 04:04:51 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/14 05:35:17 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av)
 		return (FALSE);
 	gettimeofday(&tv, NULL);
 	cfg->t_start = tv;
+	cfg->sim = TRUE;
 	if (!(ft_malloc((void **)&cfg->tid, sizeof(pthread_t) * cfg->n) && \
 			ft_malloc((void **)&cfg->forks, sizeof(t_bool) * cfg->n)))
 		return (FALSE);

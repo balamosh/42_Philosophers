@@ -6,8 +6,9 @@ BUILD_DIR	= build/
 
 SRCS_FILES	= main.c				\
 			  philo/philo.c			\
-			  philo/routine.c		\
 			  philo/routine_utils.c	\
+			  philo/routine.c		\
+			  philo/time.c			\
 			  libft/atol.c			\
 			  libft/malloc.c		\
 			  libft/put_fd.c

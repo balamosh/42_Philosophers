@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/14 06:20:09 by sotherys          #+#    #+#             */
+/*   Updated: 2021/12/14 06:22:32 by sotherys         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	ft_routine_init(t_philo *philo, t_cfg *cfg)
@@ -11,13 +23,14 @@ void	ft_routine_init(t_philo *philo, t_cfg *cfg)
 	pthread_mutex_unlock(&cfg->mutex);
 }
 
-t_time	ft_routine_print_status(t_time t_start, int id, const char *msg)
+t_time	ft_routine_status(t_time t_start, int id, const char *msg)
 {
 	t_time	t_now;
 	long	timestamp;
 
 	gettimeofday(&t_now, NULL);
-	timestamp = (t_now.tv_sec - t_start.tv_sec) * 1000000 + t_now.tv_usec - t_start.tv_usec;
+	timestamp = (t_now.tv_sec - t_start.tv_sec) * 1000000 \
+				+ t_now.tv_usec - t_start.tv_usec;
 	printf("%ld %d %s\n", timestamp, id + 1, msg);
 	return (t_now);
 }
@@ -28,6 +41,7 @@ t_bool	ft_routine_check_time(t_time t_start, t_time t_d)
 	long	elapsed;
 
 	gettimeofday(&t_now, NULL);
-	elapsed = (t_now.tv_sec - t_start.tv_sec) * 1000000 + t_now.tv_usec - t_start.tv_usec;
-	return (elapsed >= t_d.tv_sec * 1000000 - t_d.tv_usec);
+	elapsed = (t_now.tv_sec - t_start.tv_sec) * 1000000 \
+				+ t_now.tv_usec - t_start.tv_usec;
+	return (elapsed >= t_d.tv_sec * 1000000 + t_d.tv_usec);
 }
