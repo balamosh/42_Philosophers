@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:21 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/16 02:42:21 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/16 11:08:57 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include "libft.h"
 
-typedef struct timeval t_time;
+typedef struct timeval	t_time;
 
 typedef enum s_state
 {
@@ -43,7 +43,7 @@ typedef struct s_cfg
 {
 	pthread_t		*tid;
 	pthread_mutex_t	*mutex;
-	t_bool			*forks;
+	int				*forks;
 	t_bool			sim;
 	t_bool			thread_cfg;
 	int				n;

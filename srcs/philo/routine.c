@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 21:33:19 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/16 03:03:39 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/16 11:47:23 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,25 @@ void	ft_routine_thinking(t_philo *philo, t_cfg *cfg)
 		philo->state = PH_EATING;
 		philo->t_last = ft_routine_status(cfg->t_start, philo->id, "is eating");
 	}
+	else
+	{
+		if (cfg->forks[philo->f1] == philo->id)
+			cfg->forks[philo->f1] = -1;
+		if (cfg->forks[philo->f2] == philo->id)
+			cfg->forks[philo->f2] = -1;
+		philo->fork_cnt = 0;
+	}
 }
 
 void	ft_routine_eating(t_philo *philo, t_cfg *cfg)
 {
 	if (!ft_routine_check_time(philo->t_last, cfg->t_eat))
 		return ;
-	cfg->forks[philo->f1] = TRUE;
-	cfg->forks[philo->f2] = TRUE;
+	cfg->forks[philo->f1] = -1;
+	cfg->forks[philo->f2] = -1;
 	philo->fork_cnt = 0;
 	philo->state = PH_SLEEPING;
-	philo->t_last = \
-	ft_routine_status(cfg->t_start, philo->id, "is sleeping");
+	philo->t_last = ft_routine_status(cfg->t_start, philo->id, "is sleeping");
 	++philo->n_eat;
 }
 

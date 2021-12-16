@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 06:20:09 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/16 03:01:46 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/16 11:07:43 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_routine_init(t_philo *philo, t_cfg *cfg)
 	philo->fork_cnt = 0;
 	philo->n_eat = 0;
 	pthread_mutex_unlock(&cfg->mutex[0]);
-	while(!cfg->sim)
+	while (!cfg->sim)
 		continue ;
 	philo->t_last = cfg->t_start;
 }
@@ -32,15 +32,12 @@ void	ft_routine_init(t_philo *philo, t_cfg *cfg)
 void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg, int fork)
 {
 	pthread_mutex_lock(&cfg->mutex[fork]);
-	//printf("%d got the mutex[%d]\n", philo->id + 1, fork);
-	if (cfg->forks[fork])
+	if (cfg->forks[fork] == -1)
 	{
-		cfg->forks[fork] = FALSE;
+		cfg->forks[fork] = philo->id;
 		++philo->fork_cnt;
-		//ft_routine_status(cfg->t_start, philo->id, "has taken a fork");
 	}
 	pthread_mutex_unlock(&cfg->mutex[fork]);
-	//printf("%d released the mutex[%d]\n", philo->id + 1, fork);
 }
 
 t_time	ft_routine_status(t_time t_start, int id, const char *msg)
