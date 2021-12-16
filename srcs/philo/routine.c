@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 21:33:19 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/14 06:21:53 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/16 03:03:39 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ t_bool	ft_routine_dead(t_philo *philo, t_cfg *cfg)
 	{
 		philo->state = PH_DEAD;
 		ft_routine_status(cfg->t_start, philo->id, "died");
-		pthread_mutex_lock(&cfg->mutex);
 		cfg->sim = FALSE;
-		pthread_mutex_unlock(&cfg->mutex);
 		return (TRUE);
 	}
 	return (FALSE);
@@ -30,32 +28,30 @@ t_bool	ft_routine_dead(t_philo *philo, t_cfg *cfg)
 
 void	ft_routine_thinking(t_philo *philo, t_cfg *cfg)
 {
-	pthread_mutex_lock(&cfg->mutex);
-	if (cfg->forks[philo->id % cfg->n] && \
-		cfg->forks[(philo->id + 1) % cfg->n])
+	if (philo->f1 == philo->f2)
+		return ;
+	ft_routine_take_fork(philo, cfg, philo->f1);
+	ft_routine_take_fork(philo, cfg, philo->f2);
+	if (philo->fork_cnt == 2)
 	{
-		cfg->forks[philo->id % cfg->n] = FALSE;
 		ft_routine_status(cfg->t_start, philo->id, "has taken a fork");
-		cfg->forks[(philo->id + 1) % cfg->n] = FALSE;
 		ft_routine_status(cfg->t_start, philo->id, "has taken a fork");
 		philo->state = PH_EATING;
 		philo->t_last = ft_routine_status(cfg->t_start, philo->id, "is eating");
 	}
-	pthread_mutex_unlock(&cfg->mutex);
 }
 
 void	ft_routine_eating(t_philo *philo, t_cfg *cfg)
 {
 	if (!ft_routine_check_time(philo->t_last, cfg->t_eat))
 		return ;
-	pthread_mutex_lock(&cfg->mutex);
-	cfg->forks[philo->id % cfg->n] = TRUE;
-	cfg->forks[(philo->id + 1) % cfg->n] = TRUE;
+	cfg->forks[philo->f1] = TRUE;
+	cfg->forks[philo->f2] = TRUE;
+	philo->fork_cnt = 0;
 	philo->state = PH_SLEEPING;
 	philo->t_last = \
 	ft_routine_status(cfg->t_start, philo->id, "is sleeping");
 	++philo->n_eat;
-	pthread_mutex_unlock(&cfg->mutex);
 }
 
 void	ft_routine_sleeping(t_philo *philo, t_cfg *cfg)
@@ -73,8 +69,10 @@ void	*ft_routine(void *data)
 
 	cfg = (t_cfg *)data;
 	ft_routine_init(&philo, cfg);
-	while (!ft_routine_dead(&philo, cfg))
+	while (TRUE)
 	{
+		if (ft_routine_dead(&philo, cfg))
+			break ;
 		if (philo.state == PH_THINKING)
 			ft_routine_thinking(&philo, cfg);
 		else if (philo.state == PH_EATING)

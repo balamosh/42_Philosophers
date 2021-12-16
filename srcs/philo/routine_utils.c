@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 06:20:09 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/14 06:22:32 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/16 03:01:46 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,33 @@
 
 void	ft_routine_init(t_philo *philo, t_cfg *cfg)
 {
-	pthread_mutex_lock(&cfg->mutex);
-	philo->id = cfg->i;
+	static int	id = 0;
+
+	pthread_mutex_lock(&cfg->mutex[0]);
+	philo->id = id++;
 	philo->state = PH_THINKING;
-	philo->t_last = cfg->t_start;
+	philo->f1 = philo->id % cfg->n;
+	philo->f2 = (philo->id + 1) % cfg->n;
+	philo->fork_cnt = 0;
 	philo->n_eat = 0;
-	cfg->thread_cfg = TRUE;
-	pthread_mutex_unlock(&cfg->mutex);
+	pthread_mutex_unlock(&cfg->mutex[0]);
+	while(!cfg->sim)
+		continue ;
+	philo->t_last = cfg->t_start;
+}
+
+void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg, int fork)
+{
+	pthread_mutex_lock(&cfg->mutex[fork]);
+	//printf("%d got the mutex[%d]\n", philo->id + 1, fork);
+	if (cfg->forks[fork])
+	{
+		cfg->forks[fork] = FALSE;
+		++philo->fork_cnt;
+		//ft_routine_status(cfg->t_start, philo->id, "has taken a fork");
+	}
+	pthread_mutex_unlock(&cfg->mutex[fork]);
+	//printf("%d released the mutex[%d]\n", philo->id + 1, fork);
 }
 
 t_time	ft_routine_status(t_time t_start, int id, const char *msg)
