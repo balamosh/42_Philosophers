@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 21:33:19 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/16 11:47:23 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/16 12:44:04 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ t_bool	ft_routine_dead(t_philo *philo, t_cfg *cfg)
 		return (TRUE);
 	if (ft_routine_check_time(philo->t_last, cfg->t_die))
 	{
-		philo->state = PH_DEAD;
-		ft_routine_status(cfg->t_start, philo->id, "died");
 		cfg->sim = FALSE;
+		philo->state = PH_DEAD;
+		ft_routine_status(cfg, philo->id, "died");
 		return (TRUE);
 	}
 	return (FALSE);
@@ -34,10 +34,10 @@ void	ft_routine_thinking(t_philo *philo, t_cfg *cfg)
 	ft_routine_take_fork(philo, cfg, philo->f2);
 	if (philo->fork_cnt == 2)
 	{
-		ft_routine_status(cfg->t_start, philo->id, "has taken a fork");
-		ft_routine_status(cfg->t_start, philo->id, "has taken a fork");
+		ft_routine_status(cfg, philo->id, "has taken a fork");
+		ft_routine_status(cfg, philo->id, "has taken a fork");
 		philo->state = PH_EATING;
-		philo->t_last = ft_routine_status(cfg->t_start, philo->id, "is eating");
+		philo->t_last = ft_routine_status(cfg, philo->id, "is eating");
 	}
 	else
 	{
@@ -57,7 +57,7 @@ void	ft_routine_eating(t_philo *philo, t_cfg *cfg)
 	cfg->forks[philo->f2] = -1;
 	philo->fork_cnt = 0;
 	philo->state = PH_SLEEPING;
-	philo->t_last = ft_routine_status(cfg->t_start, philo->id, "is sleeping");
+	philo->t_last = ft_routine_status(cfg, philo->id, "is sleeping");
 	++philo->n_eat;
 }
 
@@ -66,7 +66,7 @@ void	ft_routine_sleeping(t_philo *philo, t_cfg *cfg)
 	if (!ft_routine_check_time(philo->t_last, cfg->t_sleep))
 		return ;
 	philo->state = PH_THINKING;
-	ft_routine_status(cfg->t_start, philo->id, "is thinking");
+	ft_routine_status(cfg, philo->id, "is thinking");
 }
 
 void	*ft_routine(void *data)

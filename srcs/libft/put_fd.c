@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/27 10:56:09 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/13 21:18:36 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/17 22:53:30 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_putchar_fd(char c, int fd)
 {
-	write(fd, &c, 1);
+	(void)!write(fd, &c, 1);
 }
 
 void	ft_putnbr_fd(int n, int fd)

@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 06:20:09 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/16 11:07:43 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/17 23:22:27 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg, int fork)
 	pthread_mutex_unlock(&cfg->mutex[fork]);
 }
 
-t_time	ft_routine_status(t_time t_start, int id, const char *msg)
+t_time	ft_routine_status(t_cfg *cfg, int id, const char *msg)
 {
 	t_time	t_now;
 	long	timestamp;
 
 	gettimeofday(&t_now, NULL);
-	timestamp = (t_now.tv_sec - t_start.tv_sec) * 1000000 \
-				+ t_now.tv_usec - t_start.tv_usec;
+	timestamp = (t_now.tv_sec - cfg->t_start.tv_sec) * 1000 \
+				+ (t_now.tv_usec - cfg->t_start.tv_usec) / 1000;
 	printf("%ld %d %s\n", timestamp, id + 1, msg);
 	return (t_now);
 }
@@ -58,7 +58,7 @@ t_bool	ft_routine_check_time(t_time t_start, t_time t_d)
 	long	elapsed;
 
 	gettimeofday(&t_now, NULL);
-	elapsed = (t_now.tv_sec - t_start.tv_sec) * 1000000 \
-				+ t_now.tv_usec - t_start.tv_usec;
-	return (elapsed >= t_d.tv_sec * 1000000 + t_d.tv_usec);
+	elapsed = (t_now.tv_sec - t_start.tv_sec) * 1000 \
+				+ (t_now.tv_usec - t_start.tv_usec) / 1000;
+	return (elapsed >= t_d.tv_sec * 1000 + t_d.tv_usec / 1000);
 }

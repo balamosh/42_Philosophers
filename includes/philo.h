@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:21 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/16 11:08:57 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/16 12:41:58 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_time	ft_time(long n);
 
 void	*ft_routine(void *data);
 void	ft_routine_init(t_philo *philo, t_cfg *cfg);
-t_time	ft_routine_status(t_time t_start, int id, const char *msg);
+t_time	ft_routine_status(t_cfg *cfg, int id, const char *msg);
 t_bool	ft_routine_check_time(t_time t_start, t_time t_d);
 void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg, int fork);
 
