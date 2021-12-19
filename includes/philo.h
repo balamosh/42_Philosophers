@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:21 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/16 12:41:58 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/19 05:42:29 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_philo
 {
 	int		id;
 	t_state	state;
-	t_time	t_last;
+	long	t_last;
 	int		f1;
 	int		f2;
 	int		fork_cnt;
@@ -43,26 +43,28 @@ typedef struct s_cfg
 {
 	pthread_t		*tid;
 	pthread_mutex_t	*mutex;
+	pthread_mutex_t	generic_mutex;
+	pthread_mutex_t	mutex_sim;
 	int				*forks;
 	t_bool			sim;
 	t_bool			thread_cfg;
 	int				n;
 	int				i;
-	t_time			t_start;
-	t_time			t_die;
-	t_time			t_eat;
-	t_time			t_sleep;
+	long			t_start;
+	long			t_die;
+	long			t_eat;
+	long			t_sleep;
 	int				n_eat;
 }				t_cfg;
 
 void	ft_philo(int ac, char **av);
 
-t_time	ft_time(long n);
+long	ft_gettime(void);
 
 void	*ft_routine(void *data);
 void	ft_routine_init(t_philo *philo, t_cfg *cfg);
-t_time	ft_routine_status(t_cfg *cfg, int id, const char *msg);
-t_bool	ft_routine_check_time(t_time t_start, t_time t_d);
+long	ft_routine_status(t_cfg *cfg, int id, const char *msg);
+t_bool	ft_routine_check_time(long t_start, long t_d);
 void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg, int fork);
 
 t_bool	ft_routine_dead(t_philo *philo, t_cfg *cfg);

@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 21:33:19 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/16 12:44:04 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/19 07:20:16 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ t_bool	ft_routine_dead(t_philo *philo, t_cfg *cfg)
 		return (TRUE);
 	if (ft_routine_check_time(philo->t_last, cfg->t_die))
 	{
+		ft_routine_status(cfg, philo->id, "died");
 		cfg->sim = FALSE;
 		philo->state = PH_DEAD;
-		ft_routine_status(cfg, philo->id, "died");
 		return (TRUE);
 	}
 	return (FALSE);
@@ -87,6 +87,7 @@ void	*ft_routine(void *data)
 		else if (philo.state == PH_SLEEPING)
 			ft_routine_sleeping(&philo, cfg);
 	}
-	pthread_detach(cfg->tid[philo.id]);
+	pthread_mutex_unlock(&cfg->mutex_sim);
+	//pthread_detach(cfg->tid[philo.id]);
 	return (NULL);
 }

@@ -6,13 +6,16 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 03:33:53 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/17 23:23:03 by sotherys         ###   ########.fr       */
+/*   Updated: 2021/12/18 02:28:59 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_time	ft_time(long n)
+long	ft_gettime()
 {
-	return ((t_time){.tv_sec = n / 1000, .tv_usec = n * 1000});
+	t_time	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
