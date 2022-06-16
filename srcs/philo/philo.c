@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:10 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/19 07:06:41 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/16 02:17:43 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,6 @@ static t_bool	ft_philo_threads(t_cfg *cfg)
 	while (i < cfg->n)
 		if (pthread_mutex_init(&cfg->mutex[i++], NULL))
 			return (FALSE);
-	if (pthread_mutex_init(&cfg->generic_mutex, NULL))
-		return (FALSE);
-	if (pthread_mutex_init(&cfg->mutex_sim, NULL))
-		return (FALSE);
 	i = 0;
 	while (i < cfg->n)
 		if (pthread_create(&cfg->tid[i++], NULL, &ft_routine, cfg))
@@ -52,6 +48,12 @@ static t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av)
 
 	if (!ft_philo_parse(cfg, ac, av))
 		return (FALSE);
+	if (pthread_mutex_init(&cfg->generic_mutex, NULL))
+		return (FALSE);
+	if (pthread_mutex_init(&cfg->mutex_sim, NULL))
+		return (FALSE);
+	if (pthread_mutex_init(&cfg->mutex_print, NULL))
+		return (FALSE);
 	if (!(ft_malloc((void **)&cfg->tid, sizeof(pthread_t) * cfg->n) && \
 		ft_malloc((void **)&cfg->forks, sizeof(int) * cfg->n) && \
 		ft_malloc((void **)&cfg->mutex, sizeof(pthread_mutex_t) * cfg->n)))
@@ -59,11 +61,9 @@ static t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av)
 	i = 0;
 	while (i < cfg->n)
 		cfg->forks[i++] = -1;
-	cfg->sim = FALSE;
-	ft_philo_threads(cfg);
 	cfg->t_start = ft_gettime();
 	cfg->sim = TRUE;
-	pthread_mutex_lock(&cfg->mutex_sim);
+	ft_philo_threads(cfg);
 	return (TRUE);
 }
 
@@ -74,24 +74,23 @@ static void	ft_philo_destroy(t_cfg *cfg)
 	i = 0;
 	while (i < cfg->n)
 		pthread_mutex_destroy(&cfg->mutex[i++]);
+	free(cfg->forks);
+	free(cfg->tid);
+	free(cfg->mutex);
 	pthread_mutex_destroy(&cfg->generic_mutex);
 	pthread_mutex_destroy(&cfg->mutex_sim);
+	pthread_mutex_destroy(&cfg->mutex_print);
 }
 
 void	ft_philo(int ac, char **av)
 {
 	t_cfg	cfg;
+	int		i;
 
 	if (!ft_philo_init(&cfg, ac, av))
 		return ;
-	while (cfg.sim)
-		continue ;
-	pthread_mutex_lock(&cfg.generic_mutex);
-	/*
-	cfg.i = 0;
-	while (cfg.i < cfg.n)
-		pthread_join(cfg.tid[cfg.i++], NULL);
-	*/
-	pthread_mutex_lock(&cfg.mutex_sim);
+	i = 0;
+	while (i < cfg.n)
+		pthread_join(cfg.tid[i++], NULL);
 	ft_philo_destroy(&cfg);
 }

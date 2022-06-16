@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:21 by sotherys          #+#    #+#             */
-/*   Updated: 2021/12/19 05:42:29 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/16 05:18:23 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct timeval	t_time;
 
 typedef enum s_state
 {
+	PH_TAKES_FORK,
 	PH_EATING,
 	PH_SLEEPING,
 	PH_THINKING,
@@ -33,9 +34,14 @@ typedef struct s_philo
 	int		id;
 	t_state	state;
 	long	t_last;
+	long	t_start;
+	long	t_die;
+	long	t_eat;
+	long	t_sleep;
 	int		f1;
 	int		f2;
 	int		fork_cnt;
+	int		curr_eat;
 	int		n_eat;
 }				t_philo;
 
@@ -45,6 +51,7 @@ typedef struct s_cfg
 	pthread_mutex_t	*mutex;
 	pthread_mutex_t	generic_mutex;
 	pthread_mutex_t	mutex_sim;
+	pthread_mutex_t	mutex_print;
 	int				*forks;
 	t_bool			sim;
 	t_bool			thread_cfg;
@@ -63,7 +70,7 @@ long	ft_gettime(void);
 
 void	*ft_routine(void *data);
 void	ft_routine_init(t_philo *philo, t_cfg *cfg);
-long	ft_routine_status(t_cfg *cfg, int id, const char *msg);
+long	ft_routine_status(t_cfg *cfg, t_philo *philo);
 t_bool	ft_routine_check_time(long t_start, long t_d);
 void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg, int fork);
 
