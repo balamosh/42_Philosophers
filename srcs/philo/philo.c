@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/19 04:54:47 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/19 14:41:48 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,23 @@ static t_bool	ft_philo_check_dead(t_philo *philo, t_cfg *cfg)
 	return (ret);
 }
 
+static t_bool	ft_philo_check_full(t_cfg *cfg)
+{
+	t_bool	ret;
+
+	ret = FALSE;
+	pthread_mutex_lock(&cfg->generic_mutex);
+	if (cfg->curr_eat == cfg->n)
+	{
+		pthread_mutex_lock(&cfg->mutex_sim);
+		ft_routine_end(cfg);
+		pthread_mutex_unlock(&cfg->mutex_sim);
+		ret = TRUE;
+	}
+	pthread_mutex_unlock(&cfg->generic_mutex);
+	return (ret);
+}
+
 void	ft_philo(int ac, char **av)
 {
 	t_cfg	cfg;
@@ -58,7 +75,8 @@ void	ft_philo(int ac, char **av)
 		i = 0;
 		while (i < cfg.n)
 		{
-			if (ft_philo_check_dead(&cfg.philo[i++], &cfg))
+			if (ft_philo_check_full(&cfg) || \
+				ft_philo_check_dead(&cfg.philo[i++], &cfg))
 			{
 				sim = FALSE;
 				break ;

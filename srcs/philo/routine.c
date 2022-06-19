@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 21:33:19 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/19 04:50:27 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/19 14:52:01 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ void	ft_routine_eating(t_philo *philo, t_cfg *cfg)
 	pthread_mutex_unlock(&cfg->fork[philo->f2]);
 	pthread_mutex_unlock(&cfg->fork[philo->f1]);
 	++philo->n_eat;
+	if (philo->n_eat == cfg->n_eat)
+	{
+		pthread_mutex_lock(&cfg->generic_mutex);
+		++cfg->curr_eat;
+		pthread_mutex_unlock(&cfg->generic_mutex);
+	}
 }
 
 void	ft_routine_sleeping(t_philo *philo, t_cfg *cfg)
@@ -56,7 +62,7 @@ void	*ft_routine(void *data)
 
 	cfg = (t_cfg *)data;
 	philo = ft_routine_init(cfg);
-	if (philo->id % 2 == 0)
+	if (philo->id % 2 == 1)
 		ft_routine_wait(philo, cfg->t_sleep);
 	sim = TRUE;
 	while (sim)

@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:21 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/19 04:56:14 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/19 14:23:14 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,12 @@ typedef struct s_cfg
 	pthread_mutex_t	*time;
 	pthread_mutex_t	generic_mutex;
 	pthread_mutex_t	mutex_sim;
-	t_bool			sim;
-	t_bool			thread_cfg;
 	int				n;
-	int				i;
 	long			t_start;
 	long			t_die;
 	long			t_eat;
 	long			t_sleep;
+	int				curr_eat;
 	int				n_eat;
 }				t_cfg;
 
