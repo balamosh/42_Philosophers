@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:21 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/16 05:18:23 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/19 04:56:14 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,24 @@ typedef enum s_state
 
 typedef struct s_philo
 {
-	int		id;
-	t_state	state;
-	long	t_last;
-	long	t_start;
-	long	t_die;
-	long	t_eat;
-	long	t_sleep;
-	int		f1;
-	int		f2;
-	int		fork_cnt;
-	int		curr_eat;
-	int		n_eat;
+	int				id;
+	t_state			state;
+	pthread_mutex_t	mutex_sim;
+	t_bool			sim;
+	long			t_last;
+	int				f1;
+	int				f2;
+	int				n_eat;
 }				t_philo;
 
 typedef struct s_cfg
 {
 	pthread_t		*tid;
-	pthread_mutex_t	*mutex;
+	t_philo			*philo;
+	pthread_mutex_t	*fork;
+	pthread_mutex_t	*time;
 	pthread_mutex_t	generic_mutex;
 	pthread_mutex_t	mutex_sim;
-	pthread_mutex_t	mutex_print;
-	int				*forks;
 	t_bool			sim;
 	t_bool			thread_cfg;
 	int				n;
@@ -66,16 +62,21 @@ typedef struct s_cfg
 
 void	ft_philo(int ac, char **av);
 
+t_bool	ft_philo_parse(t_cfg *cfg, int ac, char **av);
+t_bool	ft_philo_threads(t_cfg *cfg);
+t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av);
+void	ft_philo_destroy(t_cfg *cfg);
+
 long	ft_gettime(void);
 
 void	*ft_routine(void *data);
-void	ft_routine_init(t_philo *philo, t_cfg *cfg);
+t_philo	*ft_routine_init(t_cfg *cfg);
 long	ft_routine_status(t_cfg *cfg, t_philo *philo);
 t_bool	ft_routine_check_time(long t_start, long t_d);
-void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg, int fork);
+void	ft_routine_wait(t_philo *philo, long t_d);
 
-t_bool	ft_routine_dead(t_philo *philo, t_cfg *cfg);
 void	ft_routine_thinking(t_philo *philo, t_cfg *cfg);
+void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg);
 void	ft_routine_eating(t_philo *philo, t_cfg *cfg);
 void	ft_routine_sleeping(t_philo *philo, t_cfg *cfg);
 

@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   swap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/14 03:33:53 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/19 04:56:11 by sotherys         ###   ########.fr       */
+/*   Created: 2022/06/18 18:21:35 by sotherys          #+#    #+#             */
+/*   Updated: 2022/06/18 18:22:29 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-
-long	ft_gettime(void)
+void	ft_swap(int *a, int *b)
 {
-	t_time	tv;
+	int	tmp;
 
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
