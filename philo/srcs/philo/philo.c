@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/19 14:41:48 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/20 00:42:38 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void	ft_routine_end(t_cfg *cfg)
 	i = 0;
 	while (i < cfg->n)
 	{
-		pthread_mutex_lock(&cfg->philo[i].mutex_sim);
+		pthread_mutex_lock(&cfg->philo[i].mutex);
 		cfg->philo[i].sim = FALSE;
-		pthread_mutex_unlock(&cfg->philo[i].mutex_sim);
+		pthread_mutex_unlock(&cfg->philo[i].mutex);
 		++i;
 	}
 }
@@ -34,10 +34,10 @@ static t_bool	ft_philo_check_dead(t_philo *philo, t_cfg *cfg)
 	pthread_mutex_lock(&cfg->time[philo->id]);
 	if (ft_routine_check_time(philo->t_last, cfg->t_die))
 	{
-		pthread_mutex_lock(&cfg->mutex_sim);
+		pthread_mutex_lock(&cfg->print);
 		printf("%ld %d died\n", ft_gettime() - cfg->t_start, philo->id + 1);
 		ft_routine_end(cfg);
-		pthread_mutex_unlock(&cfg->mutex_sim);
+		pthread_mutex_unlock(&cfg->print);
 		ret = TRUE;
 	}
 	pthread_mutex_unlock(&cfg->time[philo->id]);
@@ -49,15 +49,15 @@ static t_bool	ft_philo_check_full(t_cfg *cfg)
 	t_bool	ret;
 
 	ret = FALSE;
-	pthread_mutex_lock(&cfg->generic_mutex);
+	pthread_mutex_lock(&cfg->mutex);
 	if (cfg->curr_eat == cfg->n)
 	{
-		pthread_mutex_lock(&cfg->mutex_sim);
+		pthread_mutex_lock(&cfg->print);
 		ft_routine_end(cfg);
-		pthread_mutex_unlock(&cfg->mutex_sim);
+		pthread_mutex_unlock(&cfg->print);
 		ret = TRUE;
 	}
-	pthread_mutex_unlock(&cfg->generic_mutex);
+	pthread_mutex_unlock(&cfg->mutex);
 	return (ret);
 }
 

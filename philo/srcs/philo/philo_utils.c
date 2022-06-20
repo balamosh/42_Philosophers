@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 04:55:07 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/19 14:23:59 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/20 00:42:38 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_bool	ft_philo_threads(t_cfg *cfg)
 	{
 		if (pthread_mutex_init(&cfg->fork[i], NULL) || \
 			pthread_mutex_init(&cfg->time[i], NULL) || \
-			pthread_mutex_init(&cfg->philo[i].mutex_sim, NULL))
+			pthread_mutex_init(&cfg->philo[i].mutex, NULL))
 			return (FALSE);
 		cfg->philo[i].t_last = cfg->t_start;
 		cfg->philo[i].id = i;
@@ -57,8 +57,8 @@ t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av)
 {
 	if (!ft_philo_parse(cfg, ac, av))
 		return (FALSE);
-	if (!(!pthread_mutex_init(&cfg->generic_mutex, NULL) && \
-		!pthread_mutex_init(&cfg->mutex_sim, NULL) && \
+	if (!(!pthread_mutex_init(&cfg->mutex, NULL) && \
+		!pthread_mutex_init(&cfg->print, NULL) && \
 		ft_malloc((void **)&cfg->tid, sizeof(pthread_t) * cfg->n) && \
 		ft_malloc((void **)&cfg->philo, sizeof(t_philo) * cfg->n) && \
 		ft_malloc((void **)&cfg->fork, sizeof(pthread_mutex_t) * cfg->n) && \
@@ -78,12 +78,12 @@ void	ft_philo_destroy(t_cfg *cfg)
 	while (i < cfg->n)
 	{
 		pthread_mutex_destroy(&cfg->fork[i]);
-		pthread_mutex_destroy(&cfg->philo[i].mutex_sim);
+		pthread_mutex_destroy(&cfg->philo[i].mutex);
 		++i;
 	}
 	free(cfg->fork);
 	free(cfg->tid);
 	free(cfg->philo);
-	pthread_mutex_destroy(&cfg->generic_mutex);
-	pthread_mutex_destroy(&cfg->mutex_sim);
+	pthread_mutex_destroy(&cfg->mutex);
+	pthread_mutex_destroy(&cfg->print);
 }
