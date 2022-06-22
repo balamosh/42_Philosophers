@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:21 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/20 15:23:27 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/22 19:05:04 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ typedef struct s_cfg
 	sem_t	*fork;
 	sem_t	*print;
 	sem_t	*full;
+	sem_t	*sim_exit;
+	pid_t	*child;
+	t_bool	sim;
+	pthread_mutex_t	mutex;
 	int		n;
 	long	t_start;
 	long	t_die;
@@ -47,8 +51,7 @@ typedef struct s_cfg
 	long	t_sleep;
 	int		curr_eat;
 	int		n_eat;
-	pthread_t	dead_id;
-	pthread_t	full_id;
+	pthread_t	full_tid;
 }				t_cfg;
 
 typedef struct s_philo

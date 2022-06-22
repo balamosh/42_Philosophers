@@ -6,13 +6,13 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/20 00:42:38 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/22 21:06:19 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	ft_routine_end(t_cfg *cfg)
+void	ft_routine_end(t_cfg *cfg)
 {
 	int	i;
 
@@ -73,14 +73,14 @@ void	ft_philo(int ac, char **av)
 	while (sim)
 	{
 		i = 0;
+		sim = !ft_philo_check_full(&cfg);
+		if (!sim)
+			break ;
 		while (i < cfg.n)
 		{
-			if (ft_philo_check_full(&cfg) || \
-				ft_philo_check_dead(&cfg.philo[i++], &cfg))
-			{
-				sim = FALSE;
+			sim = !ft_philo_check_dead(&cfg.philo[i++], &cfg);
+			if (!sim)
 				break ;
-			}
 		}
 	}
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 04:55:07 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/20 00:42:38 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/22 21:01:25 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_bool	ft_philo_threads(t_cfg *cfg)
 {
 	int	i;
 
+	cfg->t_start = ft_gettime();
 	i = 0;
 	while (i < cfg->n)
 	{
@@ -64,7 +65,6 @@ t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av)
 		ft_malloc((void **)&cfg->fork, sizeof(pthread_mutex_t) * cfg->n) && \
 		ft_malloc((void **)&cfg->time, sizeof(pthread_mutex_t) * cfg->n)))
 		return (FALSE);
-	cfg->t_start = ft_gettime();
 	cfg->curr_eat = 0;
 	ft_philo_threads(cfg);
 	return (TRUE);

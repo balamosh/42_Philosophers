@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 06:20:09 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/20 00:42:38 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/22 21:01:31 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,15 @@ t_bool	ft_routine_check_time(long t_start, long t_d)
 	return (elapsed >= t_d);
 }
 
-void	ft_routine_wait(t_philo *philo, long t_d)
+void	ft_routine_wait(t_philo *philo, long t_last, long t_d)
 {
 	t_bool	sim;
 
 	sim = TRUE;
-	while (!ft_routine_check_time(philo->t_last, t_d) && sim)
+	while (!ft_routine_check_time(t_last, t_d) && sim)
 	{
 		pthread_mutex_lock(&philo->mutex);
-		if (!philo->sim)
-			sim = FALSE;
+		sim = philo->sim;
 		pthread_mutex_unlock(&philo->mutex);
 	}
 }

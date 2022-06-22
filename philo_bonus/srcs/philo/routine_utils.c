@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 06:20:09 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/20 15:21:10 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/22 10:28:38 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,26 @@ static void	*ft_routine_check_dead(void *data)
 		{
 			sem_wait(cfg->print);
 			printf("%ld %d died\n", ft_gettime() - cfg->t_start, philo->id + 1);
-			exit(0);
+			break ;
 		}
 		pthread_mutex_unlock(&philo->time_mutex);
 		usleep(1);
 	}
+	sem_post(cfg->sim_exit);
 	return (NULL);
 }
 
 t_bool	ft_routine_init(t_cfg *cfg, t_philo *philo)
 {
-	if (pthread_mutex_init(&philo->sim_mutex, NULL) || \
-		pthread_mutex_init(&philo->time_mutex, NULL) || \
-		pthread_create(&philo->tid, NULL, &ft_routine_check_dead, philo))
-		return (FALSE);
 	philo->cfg = cfg;
 	philo->sim = TRUE;
 	philo->t_last = cfg->t_start;
 	philo->state = PH_TAKES_FORK;
 	philo->n_eat = 0;
+	if (pthread_mutex_init(&philo->sim_mutex, NULL) || \
+		pthread_mutex_init(&philo->time_mutex, NULL) || \
+		pthread_create(&philo->tid, NULL, &ft_routine_check_dead, philo))
+		return (FALSE);
 	return (TRUE);
 }
 

@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 04:55:07 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/20 14:23:33 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/22 19:35:13 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_bool	ft_philo_parse(t_cfg *cfg, int ac, char **av)
 	if (ac == 5)
 		cfg->n_eat = ft_atol(av[4]);
 	if (cfg->n < 0 || cfg->t_die < 0 || cfg->t_eat < 0 || cfg->t_sleep < 0 || \
-		(cfg->n_eat < 0 && ac == 5))
+		(cfg->n_eat <= 0 && ac == 5))
 		return (FALSE);
 	return (TRUE);
 }
@@ -70,22 +70,18 @@ t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av)
 	ft_philo_threads(cfg);
 	return (TRUE);
 }
+*/
 
 void	ft_philo_destroy(t_cfg *cfg)
 {
-	int	i;
-
-	i = 0;
-	while (i < cfg->n)
-	{
-		pthread_mutex_destroy(&cfg->fork[i]);
-		pthread_mutex_destroy(&cfg->philo[i].mutex);
-		++i;
-	}
-	free(cfg->fork);
-	free(cfg->tid);
-	free(cfg->philo);
 	pthread_mutex_destroy(&cfg->mutex);
-	pthread_mutex_destroy(&cfg->print);
+	sem_unlink("/fork");
+	sem_unlink("/print");
+	sem_unlink("/full");
+	sem_unlink("/sim_exit");
+	sem_close(cfg->fork);
+	sem_close(cfg->print);
+	sem_close(cfg->full);
+	sem_close(cfg->sim_exit);
+	free(cfg->child);
 }
-*/

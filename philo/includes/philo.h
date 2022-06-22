@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:21 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/20 00:42:38 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/22 20:45:36 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	ft_philo(int ac, char **av);
 t_bool	ft_philo_parse(t_cfg *cfg, int ac, char **av);
 t_bool	ft_philo_threads(t_cfg *cfg);
 t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av);
+void	ft_routine_end(t_cfg *cfg);
 void	ft_philo_destroy(t_cfg *cfg);
 
 long	ft_gettime(void);
@@ -71,7 +72,7 @@ void	*ft_routine(void *data);
 t_philo	*ft_routine_init(t_cfg *cfg);
 long	ft_routine_status(t_cfg *cfg, t_philo *philo);
 t_bool	ft_routine_check_time(long t_start, long t_d);
-void	ft_routine_wait(t_philo *philo, long t_d);
+void	ft_routine_wait(t_philo *philo, long t_last, long t_d);
 
 void	ft_routine_thinking(t_philo *philo, t_cfg *cfg);
 void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg);

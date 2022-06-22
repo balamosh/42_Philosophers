@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 21:33:19 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/20 14:58:37 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/22 19:42:33 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,14 @@ void	ft_routine_eating(t_philo *philo, t_cfg *cfg)
 	philo->t_last = ft_routine_status(cfg, philo);
 	pthread_mutex_unlock(&philo->time_mutex);
 	ft_routine_wait(philo, cfg->t_eat);
+	if (++philo->n_eat == cfg->n_eat)
+	{
+		sem_wait(cfg->print);
+		sem_post(cfg->full);
+	}
 	philo->state = PH_SLEEPING;
 	sem_post(cfg->fork);
 	sem_post(cfg->fork);
-	++philo->n_eat;
 }
 
 void	ft_routine_sleeping(t_philo *philo, t_cfg *cfg)
@@ -53,12 +57,10 @@ void	ft_routine(t_cfg *cfg, t_philo *philo)
 	t_bool	sim;
 
 	if (!ft_routine_init(cfg, philo))
-		exit(1);
+		return ;
 	sim = TRUE;
 	while (sim)
 	{
-		if (philo->n_eat == cfg->n_eat)
-			sem_post(cfg->full);
 		ft_routine_take_fork(philo, cfg);
 		ft_routine_eating(philo, cfg);
 		ft_routine_sleeping(philo, cfg);
