@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 21:33:19 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/22 21:04:43 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/29 10:51:09 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg)
 {
 	if (philo->f1 == philo->f2)
 		return ;
+	pthread_mutex_lock(&cfg->take_fork);
 	pthread_mutex_lock(&cfg->fork[philo->f1]);
 	ft_routine_status(cfg, philo);
 	pthread_mutex_lock(&cfg->fork[philo->f2]);
 	ft_routine_status(cfg, philo);
+	pthread_mutex_unlock(&cfg->take_fork);
 	philo->state = PH_EATING;
 }
 

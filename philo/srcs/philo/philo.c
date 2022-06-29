@@ -6,24 +6,40 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/22 21:06:19 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/29 10:50:42 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_routine_end(t_cfg *cfg)
+t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av)
 {
-	int	i;
+	cfg->tid = NULL;
+	cfg->philo = NULL;
+	cfg->fork = NULL;
+	cfg->time = NULL;
+	if (!ft_philo_parse(cfg, ac, av))
+		return (FALSE);
+	if (!(!pthread_mutex_init(&cfg->mutex, NULL) && \
+		!pthread_mutex_init(&cfg->print, NULL) && \
+		!pthread_mutex_init(&cfg->take_fork, NULL) && \
+		ft_malloc((void **)&cfg->tid, sizeof(pthread_t) * cfg->n) && \
+		ft_malloc((void **)&cfg->philo, sizeof(t_philo) * cfg->n) && \
+		ft_malloc((void **)&cfg->fork, sizeof(pthread_mutex_t) * cfg->n) && \
+		ft_malloc((void **)&cfg->time, sizeof(pthread_mutex_t) * cfg->n)))
+		return (FALSE);
+	cfg->curr_eat = 0;
+	if (!ft_philo_threads(cfg))
+		return (FALSE);
+	return (TRUE);
+}
 
-	i = 0;
-	while (i < cfg->n)
-	{
-		pthread_mutex_lock(&cfg->philo[i].mutex);
-		cfg->philo[i].sim = FALSE;
-		pthread_mutex_unlock(&cfg->philo[i].mutex);
-		++i;
-	}
+void	ft_philo_destroy(t_cfg *cfg)
+{
+	free(cfg->tid);
+	free(cfg->philo);
+	free(cfg->fork);
+	free(cfg->time);
 }
 
 static t_bool	ft_philo_check_dead(t_philo *philo, t_cfg *cfg)
@@ -68,7 +84,7 @@ void	ft_philo(int ac, char **av)
 	t_bool	sim;
 
 	if (!ft_philo_init(&cfg, ac, av))
-		return ;
+		return (ft_philo_destroy(&cfg));
 	sim = TRUE;
 	while (sim)
 	{

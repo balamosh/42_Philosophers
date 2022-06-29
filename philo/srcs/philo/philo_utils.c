@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 04:55:07 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/22 21:01:25 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/29 10:14:38 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,23 @@ t_bool	ft_philo_parse(t_cfg *cfg, int ac, char **av)
 	return (TRUE);
 }
 
-t_bool	ft_philo_threads(t_cfg *cfg)
+void	ft_philo_threads_join(t_cfg *cfg)
 {
 	int	i;
 
-	cfg->t_start = ft_gettime();
+	i = 0;
+	while (i < cfg->n)
+	{
+		if (!cfg->philo[i].pthread_error)
+			pthread_join(cfg->tid[i], NULL);
+		++i;
+	}
+}
+
+static t_bool	ft_philo_mutex(t_cfg *cfg)
+{
+	int	i;
+
 	i = 0;
 	while (i < cfg->n)
 	{
@@ -42,48 +54,31 @@ t_bool	ft_philo_threads(t_cfg *cfg)
 		cfg->philo[i].t_last = cfg->t_start;
 		cfg->philo[i].id = i;
 		cfg->philo[i].sim = TRUE;
-		++i;
-	}
-	i = 0;
-	while (i < cfg->n)
-	{
-		if (pthread_create(&cfg->tid[i], NULL, &ft_routine, cfg))
-			return (FALSE);
+		cfg->philo[i].pthread_error = TRUE;
 		++i;
 	}
 	return (TRUE);
 }
 
-t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av)
-{
-	if (!ft_philo_parse(cfg, ac, av))
-		return (FALSE);
-	if (!(!pthread_mutex_init(&cfg->mutex, NULL) && \
-		!pthread_mutex_init(&cfg->print, NULL) && \
-		ft_malloc((void **)&cfg->tid, sizeof(pthread_t) * cfg->n) && \
-		ft_malloc((void **)&cfg->philo, sizeof(t_philo) * cfg->n) && \
-		ft_malloc((void **)&cfg->fork, sizeof(pthread_mutex_t) * cfg->n) && \
-		ft_malloc((void **)&cfg->time, sizeof(pthread_mutex_t) * cfg->n)))
-		return (FALSE);
-	cfg->curr_eat = 0;
-	ft_philo_threads(cfg);
-	return (TRUE);
-}
-
-void	ft_philo_destroy(t_cfg *cfg)
+t_bool	ft_philo_threads(t_cfg *cfg)
 {
 	int	i;
 
+	cfg->t_start = ft_gettime();
+	if (!ft_philo_mutex(cfg))
+		return (FALSE);
 	i = 0;
 	while (i < cfg->n)
 	{
-		pthread_mutex_destroy(&cfg->fork[i]);
-		pthread_mutex_destroy(&cfg->philo[i].mutex);
+		cfg->philo[i].pthread_error = \
+		pthread_create(&cfg->tid[i], NULL, &ft_routine, cfg);
+		if (cfg->philo[i].pthread_error)
+		{
+			ft_routine_end(cfg);
+			ft_philo_threads_join(cfg);
+			return (FALSE);
+		}
 		++i;
 	}
-	free(cfg->fork);
-	free(cfg->tid);
-	free(cfg->philo);
-	pthread_mutex_destroy(&cfg->mutex);
-	pthread_mutex_destroy(&cfg->print);
+	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 06:20:09 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/22 21:01:31 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/29 10:09:41 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,20 @@ t_philo	*ft_routine_init(t_cfg *cfg)
 	philo->state = PH_TAKES_FORK;
 	philo->n_eat = 0;
 	return (philo);
+}
+
+void	ft_routine_end(t_cfg *cfg)
+{
+	int	i;
+
+	i = 0;
+	while (i < cfg->n)
+	{
+		pthread_mutex_lock(&cfg->philo[i].mutex);
+		cfg->philo[i].sim = FALSE;
+		pthread_mutex_unlock(&cfg->philo[i].mutex);
+		++i;
+	}
 }
 
 long	ft_routine_status(t_cfg *cfg, t_philo *philo)
