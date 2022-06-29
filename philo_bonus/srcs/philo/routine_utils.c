@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 06:20:09 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/22 10:28:38 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/29 11:08:16 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	*ft_routine_check_dead(void *data)
 	t_philo	*philo;
 	t_cfg	*cfg;
 
-	philo = (t_philo*)data;
+	philo = (t_philo *)data;
 	cfg = philo->cfg;
 	while (TRUE)
 	{
@@ -71,8 +71,8 @@ t_bool	ft_routine_check_time(long t_start, long t_d)
 	return (elapsed >= t_d);
 }
 
-void	ft_routine_wait(t_philo *philo, long t_d)
+void	ft_routine_wait(long t_last, long t_d)
 {
-	while (!ft_routine_check_time(philo->t_last, t_d))
+	while (!ft_routine_check_time(t_last, t_d))
 		continue ;
 }

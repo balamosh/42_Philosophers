@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 04:55:07 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/22 19:35:13 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 00:59:00 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,61 +27,38 @@ t_bool	ft_philo_parse(t_cfg *cfg, int ac, char **av)
 	return (TRUE);
 }
 
-/*
-t_bool	ft_philo_threads(t_cfg *cfg)
+t_bool	ft_philo_fork_create(t_cfg *cfg)
+{
+	t_philo	philo;
+	int		i;
+
+	i = 0;
+	while (i < cfg->n)
+	{
+		cfg->child[i] = fork();
+		if (cfg->child[i] == 0)
+		{
+			philo.id = i;
+			ft_routine(cfg, &philo);
+			exit(0);
+		}
+		else if (cfg->child[i] < 0)
+			return (FALSE);
+		++i;
+	}
+	return (TRUE);
+}
+
+void	ft_philo_fork_kill(t_cfg *cfg)
 {
 	int	i;
 
 	i = 0;
 	while (i < cfg->n)
 	{
-		if (pthread_mutex_init(&cfg->fork[i], NULL) || \
-			pthread_mutex_init(&cfg->time[i], NULL) || \
-			pthread_mutex_init(&cfg->philo[i].mutex, NULL))
-			return (FALSE);
-		cfg->philo[i].t_last = cfg->t_start;
-		cfg->philo[i].id = i;
-		cfg->philo[i].sim = TRUE;
+		sem_post(cfg->full);
+		if (cfg->child[i] > 0)
+			kill(cfg->child[i], SIGKILL);
 		++i;
 	}
-	i = 0;
-	while (i < cfg->n)
-	{
-		if (pthread_create(&cfg->tid[i], NULL, &ft_routine, cfg))
-			return (FALSE);
-		++i;
-	}
-	return (TRUE);
-}
-
-t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av)
-{
-	if (!ft_philo_parse(cfg, ac, av))
-		return (FALSE);
-	if (!(!pthread_mutex_init(&cfg->mutex, NULL) && \
-		!pthread_mutex_init(&cfg->print, NULL) && \
-		ft_malloc((void **)&cfg->tid, sizeof(pthread_t) * cfg->n) && \
-		ft_malloc((void **)&cfg->philo, sizeof(t_philo) * cfg->n) && \
-		ft_malloc((void **)&cfg->fork, sizeof(pthread_mutex_t) * cfg->n) && \
-		ft_malloc((void **)&cfg->time, sizeof(pthread_mutex_t) * cfg->n)))
-		return (FALSE);
-	cfg->t_start = ft_gettime();
-	cfg->curr_eat = 0;
-	ft_philo_threads(cfg);
-	return (TRUE);
-}
-*/
-
-void	ft_philo_destroy(t_cfg *cfg)
-{
-	pthread_mutex_destroy(&cfg->mutex);
-	sem_unlink("/fork");
-	sem_unlink("/print");
-	sem_unlink("/full");
-	sem_unlink("/sim_exit");
-	sem_close(cfg->fork);
-	sem_close(cfg->print);
-	sem_close(cfg->full);
-	sem_close(cfg->sim_exit);
-	free(cfg->child);
 }
