@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:21 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/30 18:42:49 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 20:23:47 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ typedef struct s_cfg
 	t_philo			*philo;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	*time;
-	pthread_mutex_t	take_fork;
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	print;
 	int				n;

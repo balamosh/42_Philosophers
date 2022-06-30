@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 06:20:09 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/30 14:33:47 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 20:22:58 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ t_philo	*ft_routine_init(t_cfg *cfg)
 	pthread_mutex_unlock(&cfg->mutex);
 	philo->f1 = philo->id % cfg->n;
 	philo->f2 = (philo->id + 1) % cfg->n;
-	if (philo->f2 < philo->f1)
-		ft_swap(&philo->f1, &philo->f2);
 	philo->state = PH_TAKES_FORK;
 	philo->n_eat = 0;
 	return (philo);

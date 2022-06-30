@@ -11,8 +11,7 @@ SRCS_FILES	= main.c				\
 			  philo/routine.c		\
 			  philo/time.c			\
 			  libft/atol.c			\
-			  libft/malloc.c		\
-			  libft/swap.c
+			  libft/malloc.c		
 
 OBJS_FILES	= $(SRCS_FILES:.c=.o)
 

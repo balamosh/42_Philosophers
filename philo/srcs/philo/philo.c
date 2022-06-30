@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/30 18:09:04 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 20:23:57 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av)
 		return (FALSE);
 	if (!(!pthread_mutex_init(&cfg->mutex, NULL) && \
 		!pthread_mutex_init(&cfg->print, NULL) && \
-		!pthread_mutex_init(&cfg->take_fork, NULL) && \
 		ft_malloc((void **)&cfg->tid, sizeof(pthread_t) * cfg->n) && \
 		ft_malloc((void **)&cfg->philo, sizeof(t_philo) * cfg->n) && \
 		ft_malloc((void **)&cfg->fork, sizeof(pthread_mutex_t) * cfg->n) && \
