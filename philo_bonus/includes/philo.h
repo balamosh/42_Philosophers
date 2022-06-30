@@ -6,23 +6,20 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:21 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/30 00:59:36 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:12:47 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <unistd.h>
 # include <semaphore.h>
 # include <fcntl.h>
+# include <signal.h>
 # include <pthread.h>
 # include <sys/time.h>
-# include <sys/wait.h>
 # include <stdio.h>
 # include "libft.h"
-
-# include <errno.h>
 
 typedef struct timeval	t_time;
 
@@ -38,6 +35,7 @@ typedef enum s_state
 typedef struct s_cfg
 {
 	sem_t			*fork;
+	sem_t			*take_fork;
 	sem_t			*print;
 	sem_t			*full;
 	sem_t			*sim_exit;

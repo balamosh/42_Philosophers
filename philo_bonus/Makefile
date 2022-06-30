@@ -22,8 +22,7 @@ OBJS		= $(addprefix $(BUILD_DIR), $(OBJS_FILES))
 DEPS		= $(OBJS:.o=.d)
 
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra -MMD -pthread 
-#-fsanitize=thread -g
+CFLAGS		= -Wall -Werror -Wextra -MMD -pthread
 
 all: $(NAME)
 

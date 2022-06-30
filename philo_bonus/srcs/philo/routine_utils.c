@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 06:20:09 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/29 11:08:16 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 14:53:54 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	*ft_routine_check_dead(void *data)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->time_mutex);
-		usleep(1);
+		usleep(200);
 	}
 	sem_post(cfg->sim_exit);
 	return (NULL);
@@ -74,5 +74,5 @@ t_bool	ft_routine_check_time(long t_start, long t_d)
 void	ft_routine_wait(long t_last, long t_d)
 {
 	while (!ft_routine_check_time(t_last, t_d))
-		continue ;
+		usleep(100);
 }

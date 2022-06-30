@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 21:33:19 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/29 11:06:18 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 14:54:09 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg)
 {
 	if (cfg->n < 2)
 		return ;
+	sem_wait(cfg->take_fork);
 	sem_wait(cfg->fork);
 	ft_routine_status(cfg, philo);
 	sem_wait(cfg->fork);
 	ft_routine_status(cfg, philo);
+	sem_post(cfg->take_fork);
 	philo->state = PH_EATING;
 }
 
