@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/30 15:07:58 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 19:05:38 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static void	ft_philo_sem_unlink(void)
 
 t_bool	ft_philo_init(t_cfg *cfg, int ac, char **av)
 {
+	cfg->child = NULL;
 	cfg->fork = SEM_FAILED;
 	cfg->take_fork = SEM_FAILED;
 	cfg->print = SEM_FAILED;

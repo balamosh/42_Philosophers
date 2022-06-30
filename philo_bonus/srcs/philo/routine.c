@@ -6,16 +6,16 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 21:33:19 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/30 14:54:09 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 18:57:12 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg)
+t_bool	ft_routine_take_fork(t_philo *philo, t_cfg *cfg)
 {
 	if (cfg->n < 2)
-		return ;
+		return (FALSE);
 	sem_wait(cfg->take_fork);
 	sem_wait(cfg->fork);
 	ft_routine_status(cfg, philo);
@@ -23,6 +23,7 @@ void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg)
 	ft_routine_status(cfg, philo);
 	sem_post(cfg->take_fork);
 	philo->state = PH_EATING;
+	return (TRUE);
 }
 
 void	ft_routine_eating(t_philo *philo, t_cfg *cfg)
@@ -65,13 +66,13 @@ void	ft_routine(t_cfg *cfg, t_philo *philo)
 	sim = TRUE;
 	while (sim)
 	{
-		ft_routine_take_fork(philo, cfg);
-		ft_routine_eating(philo, cfg);
-		ft_routine_sleeping(philo, cfg);
-		ft_routine_thinking(philo, cfg);
 		pthread_mutex_lock(&philo->sim_mutex);
 		sim = philo->sim;
 		pthread_mutex_unlock(&philo->sim_mutex);
+		if (!ft_routine_take_fork(philo, cfg))
+			continue ;
+		ft_routine_eating(philo, cfg);
+		ft_routine_sleeping(philo, cfg);
+		ft_routine_thinking(philo, cfg);
 	}
-	printf("%d FINISHED\n", philo->id);
 }

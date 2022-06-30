@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:56:10 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/29 10:50:42 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 18:09:04 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,10 @@ void	ft_philo(int ac, char **av)
 	while (sim)
 	{
 		i = 0;
-		sim = !ft_philo_check_full(&cfg);
-		if (!sim)
+		if (ft_philo_check_full(&cfg))
 			break ;
-		while (i < cfg.n)
-		{
+		while (i < cfg.n && sim)
 			sim = !ft_philo_check_dead(&cfg.philo[i++], &cfg);
-			if (!sim)
-				break ;
-		}
 	}
 	i = 0;
 	while (i < cfg.n)

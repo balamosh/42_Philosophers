@@ -6,7 +6,7 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 04:55:07 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/30 14:33:53 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 19:29:03 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ t_bool	ft_philo_parse(t_cfg *cfg, int ac, char **av)
 	cfg->n_eat = -1;
 	if (ac == 5)
 		cfg->n_eat = ft_atol(av[4]);
-	if (cfg->n < 0 || cfg->t_die < 0 || cfg->t_eat < 0 || cfg->t_sleep < 0 || \
-		(cfg->n_eat < 0 && ac == 5))
+	if (cfg->n <= 0 || cfg->t_die <= 0 || \
+		cfg->t_eat <= 0 || cfg->t_sleep <= 0 || \
+		(cfg->n_eat <= 0 && ac == 5))
 		return (FALSE);
 	return (TRUE);
 }

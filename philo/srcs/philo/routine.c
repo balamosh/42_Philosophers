@@ -6,16 +6,16 @@
 /*   By: sotherys <sotherys@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 21:33:19 by sotherys          #+#    #+#             */
-/*   Updated: 2022/06/30 14:51:54 by sotherys         ###   ########.fr       */
+/*   Updated: 2022/06/30 19:28:20 by sotherys         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg)
+t_bool	ft_routine_take_fork(t_philo *philo, t_cfg *cfg)
 {
 	if (philo->f1 == philo->f2)
-		return ;
+		return (FALSE);
 	pthread_mutex_lock(&cfg->take_fork);
 	pthread_mutex_lock(&cfg->fork[philo->f1]);
 	ft_routine_status(cfg, philo);
@@ -23,6 +23,7 @@ void	ft_routine_take_fork(t_philo *philo, t_cfg *cfg)
 	ft_routine_status(cfg, philo);
 	pthread_mutex_unlock(&cfg->take_fork);
 	philo->state = PH_EATING;
+	return (TRUE);
 }
 
 void	ft_routine_eating(t_philo *philo, t_cfg *cfg)
@@ -55,6 +56,7 @@ void	ft_routine_thinking(t_philo *philo, t_cfg *cfg)
 {
 	ft_routine_status(cfg, philo);
 	philo->state = PH_TAKES_FORK;
+	usleep(1);
 }
 
 void	*ft_routine(void *data)
@@ -70,13 +72,14 @@ void	*ft_routine(void *data)
 	sim = TRUE;
 	while (sim)
 	{
-		ft_routine_take_fork(philo, cfg);
-		ft_routine_eating(philo, cfg);
-		ft_routine_sleeping(philo, cfg);
-		ft_routine_thinking(philo, cfg);
 		pthread_mutex_lock(&philo->mutex);
 		sim = philo->sim;
 		pthread_mutex_unlock(&philo->mutex);
+		if (!ft_routine_take_fork(philo, cfg))
+			continue ;
+		ft_routine_eating(philo, cfg);
+		ft_routine_sleeping(philo, cfg);
+		ft_routine_thinking(philo, cfg);
 	}
 	return (NULL);
 }
